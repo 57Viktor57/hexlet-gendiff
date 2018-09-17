@@ -1,0 +1,48 @@
+{
+  "name": "second_v_k_project",
+  "version": "1.0.3",
+  "description": "second project by viktor kugay for hexlet",
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "babel-node": "babel-node",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build",
+    "eslint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/57Viktor57/project-lvl2-s329.git"
+  },
+  "keywords": [
+    "hexlet",
+    "second",
+    "project"
+  ],
+  "author": "viktor_ku",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/57Viktor57/project-lvl2-s329/issues"
+  },
+  "homepage": "https://github.com/57Viktor57/project-lvl2-s329#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.1",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-stage-0": "^7.0.0",
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-babel": "^5.2.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
+  "dependencies": {
+    "commander": "^2.18.0"
+  }
+}
