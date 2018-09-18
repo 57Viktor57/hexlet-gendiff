@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
-const program = require('commander');
+import commander from 'commander';
+import genDiff from '..';
 
-program
+commander
   .version('1.0.0')
   .description('Compares two configuration files and shows a difference.')
   .arguments('<firstConfig> <secondConfig>')
   .option('-f, --format [type]', 'Output format')
+  .action(genDiff)
   .parse(process.argv);
