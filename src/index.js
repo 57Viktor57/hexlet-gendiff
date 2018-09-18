@@ -67,8 +67,7 @@ const genDiff = (path1, path2) => {
     return acc;
   }, []); // reduce
 
-  console.log(`{\n${result.join('\n')}\n}`);
-  return result;
+  return `{\n${result.join('\n')}\n}`;
 }; // function genDiff
 
 export default genDiff;
