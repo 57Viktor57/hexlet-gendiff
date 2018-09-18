@@ -1,6 +1,6 @@
 {
   "name": "second_v_k_project",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "second project by viktor kugay for hexlet",
   "main": "dist/index.js",
   "bin": {
@@ -56,6 +56,7 @@
     "jest-cli": "^23.6.0"
   },
   "dependencies": {
-    "commander": "^2.18.0"
+    "commander": "^2.18.0",
+    "lodash": "^4.17.11"
   }
 }
