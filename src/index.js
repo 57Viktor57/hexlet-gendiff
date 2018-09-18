@@ -18,7 +18,7 @@ const genDiff = (path1, path2) => {
         beforeValue: before[item],
         afterValue: after[item],
       });
-    }
+    } // if
     if ((_.has(before, item) && _.has(after, item)) && before[item] !== after[item]) {
       return acc.concat({
         type: 'changed',
@@ -26,7 +26,7 @@ const genDiff = (path1, path2) => {
         beforeValue: before[item],
         afterValue: after[item],
       });
-    }
+    } // if
     if (_.has(before, item) && !_.has(after, item)) {
       return acc.concat({
         type: 'del',
@@ -34,7 +34,7 @@ const genDiff = (path1, path2) => {
         beforeValue: before[item],
         afterValue: null,
       });
-    }
+    } // if
     if (!_.has(before, item) && _.has(after, item)) {
       return acc.concat({
         type: 'add',
@@ -42,31 +42,30 @@ const genDiff = (path1, path2) => {
         beforeValue: null,
         afterValue: after[item],
       });
-    }
+    } // if
     return acc;
-  }, []);
+  }, []); // reduce
 
   const result = ast.reduce((acc, item) => {
     if (item.type === 'equal') {
       acc.push(`${item.key}: ${item.beforeValue}`);
       return acc;
-    }
+    } // if
     if (item.type === 'changed') {
       acc.push(`- ${item.key}: ${item.beforeValue}`);
       acc.push(`+ ${item.key}: ${item.afterValue}`);
       return acc;
-    }
+    } // if
     if (item.type === 'del') {
       acc.push(`- ${item.key}: ${item.beforeValue}`);
       return acc;
-    }
+    } // if
     if (item.type === 'add') {
       acc.push(`+ ${item.key}: ${item.afterValue}`);
-    }
-
+    } // if
     return acc;
   }, []); // reduce
-
+  console.log(`{\n${result.join('\n')}\n}`);
   return `{\n${result.join('\n')}\n}`;
 }; // function genDiff
 
