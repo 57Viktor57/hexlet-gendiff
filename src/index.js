@@ -9,19 +9,18 @@ import fs from 'fs';
 // не строку, а данные?
 
 const genDiff = (path1, path2) => {
-
-  const firstFile = JSON.parse(fs.readFileSync(__dirname + '/' + path1.toString().trim(), 'utf8'));
-  const secondFile = JSON.parse(fs.readFileSync(__dirname + '/' + path2.toString().trim(), 'utf8'));
+  const firstFile = JSON.parse(fs.readFileSync(`${__dirname}/${path1.toString().trim()}`, 'utf8'));
+  const secondFile = JSON.parse(fs.readFileSync(`${__dirname}/${path2.toString().trim()}`, 'utf8'));
 
   const keysFirstFile = Object.keys(firstFile);
   const keysSecondFile = Object.keys(secondFile);
 
   const compare = {
-    'equal': {},
-    'changed': {},
-    'add': {},
-    'del': {}
-  } // compare
+    equal: {},
+    changed: {},
+    add: {},
+    del: {},
+  }; // compare
   const changedElem = compare.changed;
   const equalElem = compare.equal;
   const addElem = compare.add;
@@ -55,34 +54,46 @@ const genDiff = (path1, path2) => {
 
   let result = '';
 
-  for (let value in compare) {
+  const keys = Object.keys(compare);
+  for (let j = 0; j < keys.length; j += 1) {
+    const value = keys[j];
     switch (value) {
-      case 'changed':
-        for (let elements in changedElem) {
-          const [del, add] = changedElem[elements];
-          result += `- ${elements}: ${del}\n+ ${elements}: ${add}\n`;
+      case 'changed': {
+        const changedKeys = Object.keys(changedElem);
+        for (let i = 0; i < changedKeys.length; i += 1) {
+          const [del, add] = changedElem[changedKeys[i]];
+          result += `- ${changedKeys[i]}: ${del}\n+ ${changedKeys[i]}: ${add}\n`;
         } // for
         break;
-      case 'add':
-        for (let elements in addElem) {
-          result += `+ ${elements} ${addElem[elements]}\n`
+      } // case
+      case 'add': {
+        const addKeys = Object.keys(addElem);
+        for (let i = 0; i < addKeys.length; i += 1) {
+          result += `+ ${addKeys[i]} ${addElem[addKeys[i]]}\n`;
         } // for
         break;
-      case 'equal':
-        for (let elements in equalElem) {
-          result += `${elements} ${equalElem[elements]}\n`
+      } // case
+      case 'equal': {
+        const equalKeys = Object.keys(equalElem);
+        for (let i = 0; i < equalKeys.length; i += 1) {
+          result += `${equalKeys[i]} ${equalElem[equalKeys[i]]}\n`;
         } // for
         break;
-      case 'del':
-        for (let elements in delElem) {
-          result += `- ${elements} ${delElem[elements]}\n`
+      } // case
+      case 'del': {
+        const delKeys = Object.keys(delElem);
+        for (let i = 0; i < delKeys.length; i += 1) {
+          result += `- ${delKeys[i]} ${delElem[delKeys[i]]}\n`;
         } // for
         break;
+      } // case
+      default:
     } // switch
   } // for
 
-  result = '{\n' + result + '}';
+  result = `{\n${result}}`;
+  console.log(result);
   return result;
-} // function genDiff
+}; // function genDiff
 
 export default genDiff;
