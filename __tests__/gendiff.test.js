@@ -8,6 +8,6 @@ describe('It works', () => {
     const before = `${path}file1.json`;
     const after = `${path}file2.json`;
     const content = fs.readFileSync(`${__dirname}/__fixtures__/expect.txt`, 'utf-8').trim();
-    expect(genDiff(before, after)).toEqual(content);
+    expect(`{\n${genDiff(before, after).join('\n')}\n}`).toEqual(content);
   });
 });
