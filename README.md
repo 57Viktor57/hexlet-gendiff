@@ -9,9 +9,9 @@
 ```sh
 $ make install
 ```
-## gendiff JSON
+## Asciinema
 
-[![asciicast](https://asciinema.org/a/JfyGSMbm1uJfubcf7hqoftGuD.png)](https://asciinema.org/a/JfyGSMbm1uJfubcf7hqoftGuD)
+[![asciicast](https://asciinema.org/a/EqC2LnXeuLyEHBH6pS8jhJZI8.png)](https://asciinema.org/a/EqC2LnXeuLyEHBH6pS8jhJZI8)
 
 ## Help
 
