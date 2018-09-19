@@ -1,6 +1,6 @@
 {
   "name": "second_v_k_project",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "second project by viktor kugay for hexlet",
   "main": "dist/index.js",
   "bin": {
