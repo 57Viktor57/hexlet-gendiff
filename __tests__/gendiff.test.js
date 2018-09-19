@@ -16,4 +16,10 @@ describe('It works', () => {
     const content = fs.readFileSync(`${__dirname}/__fixtures__/expect.txt`, 'utf-8').trim();
     expect(`{\n${genDiff(before, after).join('\n')}\n}`).toEqual(content);
   });
+  it('ini', () => {
+    const before = `${path}file1.ini`;
+    const after = `${path}file2.ini`;
+    const content = fs.readFileSync(`${__dirname}/__fixtures__/expect.txt`, 'utf-8').trim();
+    expect(`{\n${genDiff(before, after).join('\n')}\n}`).toEqual(content);
+  });
 });
