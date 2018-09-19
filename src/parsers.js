@@ -5,6 +5,4 @@ const dataType = {
   '.yaml': yaml.safeLoad,
 };
 
-export default (data, type) => {
-  return dataType[type](data);
-};
+export default (data, type) => dataType[type](data);

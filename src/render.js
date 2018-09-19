@@ -4,18 +4,22 @@ export default ast => ast.reduce((acc, item) => {
   } = item;
   switch (type) {
     case 'equal':
-      return [...acc, `${key}: ${beforeValue}`];
-      break;
+      return [
+        ...acc, `${key}: ${beforeValue}`,
+      ];
     case 'changed':
-      return [...acc, `- ${key}: ${beforeValue}`,
-        `+ ${key}: ${afterValue}`];
-      break;
+      return [
+        ...acc, `- ${key}: ${beforeValue}`,
+        `+ ${key}: ${afterValue}`,
+      ];
     case 'del':
-        return [...acc, `- ${key}: ${beforeValue}`];
-        break;
+      return [
+        ...acc, `- ${key}: ${beforeValue}`,
+      ];
     case 'add':
-        return [...acc, `+ ${key}: ${afterValue}`];
-        break;
+      return [
+        ...acc, `+ ${key}: ${afterValue}`,
+      ];
     default: return acc;
   }
 }, []); // reduce
