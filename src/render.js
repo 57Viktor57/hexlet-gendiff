@@ -1,25 +1,50 @@
-export default ast => ast.reduce((acc, item) => {
+import _ from 'lodash';
+
+const renderObject = (data, depth) => {
+  if (_.isObject(data)) {
+    const keys = Object.keys(data);
+    return `{\n${keys.reduce((acc, item) => {
+      const currentItem = data[item];
+      if (_.isObject(currentItem)) {
+        return [...acc, `${' '.repeat(depth * 2)}${item}:`, ...renderObject(currentItem, depth + 1)];
+      }
+      return [...acc, `${' '.repeat(depth * 2)}${item}: ${currentItem}`];
+    }, []).join('\n')}\n${' '.repeat(depth * 2 - 2)}}`;
+  }
+  return data;
+};
+
+const render = (ast, depth = 1) => ast.reduce((acc, item) => {
   const {
-    type, key, beforeValue, afterValue,
+    type, key, beforeValue, afterValue, children,
   } = item;
+  const before = renderObject(beforeValue, depth + 1);
+  const after = renderObject(afterValue, depth + 1);
   switch (type) {
+    case 'object':
+      return [
+        ...acc, `${' '.repeat(depth * 2)}${key}: {`, ...render(children, depth + 1), `${' '.repeat(depth * 2)}}`,
+      ];
     case 'equal':
       return [
-        ...acc, `${key}: ${beforeValue}`,
+        ...acc, `${' '.repeat(depth * 2)}${key}: ${before}`,
       ];
     case 'changed':
       return [
-        ...acc, `- ${key}: ${beforeValue}`,
-        `+ ${key}: ${afterValue}`,
+        ...acc, `${' '.repeat(depth * 2 - 2)}- ${key}: ${before}`,
+        `${' '.repeat(depth * 2 - 2)}+ ${key}: ${after}`,
       ];
     case 'del':
       return [
-        ...acc, `- ${key}: ${beforeValue}`,
+        ...acc, `${' '.repeat(depth * 2 - 2)}- ${key}: ${before}`,
       ];
     case 'add':
       return [
-        ...acc, `+ ${key}: ${afterValue}`,
+        ...acc, `${' '.repeat(depth * 2 - 2)}+ ${key}: ${after}`,
       ];
-    default: return acc;
+    default:
+      throw new Error('Type error');
   }
-}, []); // reduce
+}, []);
+
+export default ast => `{\n${render(ast).join('\n')}\n}`;
