@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import getAst from './getAst';
-import render from './render';
+import render from './render/diffRender';
 import getParsedObject from './parsers';
 
 const genDiff = (path1, path2) => {

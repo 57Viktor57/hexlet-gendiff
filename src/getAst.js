@@ -1,20 +1,10 @@
 import _ from 'lodash';
 
 const searchKeys = (before, after, item) => _.has(before, item) && _.has(after, item);
-const compareTwoObjects = (beforeItem, afterItem) => {
-  const before = _.isObject(beforeItem);
-  const after = _.isObject(afterItem);
-  if (before && after) {
-    return 'bothObjects';
-  } if (before || after) {
-    return 'onlyOneObject';
-  }
-  return 'noObjects';
-};
-const compareTwoItems = (beforeItem, afterItem) => beforeItem === afterItem;
+const isEqual = (beforeItem, afterItem) => beforeItem === afterItem;
 
 
-const getAst = (before, after) => {
+const getAst = (before, after, depth = 0) => {
   const keys = _.union(Object.keys(before), Object.keys(after));
 
   return keys.reduce((acc, item) => {
@@ -22,57 +12,59 @@ const getAst = (before, after) => {
     const afterItem = after[item];
 
     if (searchKeys(before, after, item)) {
-      const compare = compareTwoObjects(beforeItem, afterItem);
-      switch (compare) {
-        case 'bothObjects':
-          return [...acc, {
-            type: 'object',
-            key: item,
-            children: getAst(beforeItem, afterItem),
-          }];
-        case 'onlyOneObject':
-          return [...acc, {
-            type: 'changed',
-            key: item,
-            beforeValue: beforeItem,
-            afterValue: afterItem,
-          }];
-        case 'noObjects':
-          if (compareTwoItems(beforeItem, afterItem)) {
-            return [...acc, {
-              type: 'equal',
-              key: item,
-              beforeValue: beforeItem,
-              afterValue: null,
-            }];
-          }
-          return [...acc, {
-            type: 'changed',
-            key: item,
-            beforeValue: beforeItem,
-            afterValue: afterItem,
-          }];
-
-        default:
-          throw new Error('Type error');
-      } // switch
-    } else {
-      if (_.has(before, item)) {
+      const testBefore = _.isObject(beforeItem);
+      const testAfter = _.isObject(afterItem);
+      if (testBefore && testAfter) {
         return [...acc, {
-          type: 'del',
+          type: 'object',
+          key: item,
+          children: getAst(beforeItem, afterItem, depth + 1),
+          level: depth,
+        }];
+      } if (testBefore || testAfter) {
+        return [...acc, {
+          type: 'changed',
+          key: item,
+          beforeValue: beforeItem,
+          afterValue: afterItem,
+          level: depth,
+        }];
+      }
+      if (isEqual(beforeItem, afterItem)) {
+        return [...acc, {
+          type: 'equal',
           key: item,
           beforeValue: beforeItem,
           afterValue: null,
+          level: depth,
         }];
       }
       return [...acc, {
-        type: 'add',
+        type: 'changed',
         key: item,
-        beforeValue: null,
+        beforeValue: beforeItem,
         afterValue: afterItem,
+        level: depth,
       }];
       // else
-    } // else
+    }
+    if (_.has(before, item)) {
+      return [...acc, {
+        type: 'deleted',
+        key: item,
+        beforeValue: beforeItem,
+        afterValue: null,
+        level: depth,
+      }];
+    }
+    return [...acc, {
+      type: 'added',
+      key: item,
+      beforeValue: null,
+      afterValue: afterItem,
+      level: depth,
+    }];
+    // else
   }, []); // reduce
 };
 
