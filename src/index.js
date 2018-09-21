@@ -1,10 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import getAst from './getAst';
-import render from './render/diffRender';
+import render from './render';
 import getParsedObject from './parsers';
 
-const genDiff = (path1, path2) => {
+const genDiff = (path1, path2, type = 'diff') => {
   const beforeData = fs.readFileSync(`${path1.toString().trim()}`, 'utf8');
   const afterData = fs.readFileSync(`${path2.toString().trim()}`, 'utf8');
 
@@ -15,7 +15,7 @@ const genDiff = (path1, path2) => {
   const afterObjectData = getParsedObject(afterData, afterExtension);
 
   const ast = getAst(beforeObjectData, afterObjectData);
-  return render(ast);
+  return render(ast, type);
 }; // function genDiff
 
 export default genDiff;
