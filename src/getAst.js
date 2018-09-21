@@ -1,17 +1,17 @@
 import _ from 'lodash';
 
-const equalKeys = (before, after, item) => _.has(before, item) && _.has(after, item);
-const objectsCompare = (beforeItem, afterItem) => {
+const searchKeys = (before, after, item) => _.has(before, item) && _.has(after, item);
+const compareTwoObjects = (beforeItem, afterItem) => {
   const before = _.isObject(beforeItem);
   const after = _.isObject(afterItem);
   if (before && after) {
     return 'bothObjects';
   } if (before || after) {
-    return 'onlyOneObjects';
+    return 'onlyOneObject';
   }
   return 'noObjects';
 };
-const compareItems = (beforeItem, afterItem) => beforeItem === afterItem;
+const compareTwoItems = (beforeItem, afterItem) => beforeItem === afterItem;
 
 
 const getAst = (before, after) => {
@@ -21,8 +21,8 @@ const getAst = (before, after) => {
     const beforeItem = before[item];
     const afterItem = after[item];
 
-    if (equalKeys(before, after, item)) {
-      const compare = objectsCompare(beforeItem, afterItem);
+    if (searchKeys(before, after, item)) {
+      const compare = compareTwoObjects(beforeItem, afterItem);
       switch (compare) {
         case 'bothObjects':
           return [...acc, {
@@ -30,7 +30,7 @@ const getAst = (before, after) => {
             key: item,
             children: getAst(beforeItem, afterItem),
           }];
-        case 'onlyOneObjects':
+        case 'onlyOneObject':
           return [...acc, {
             type: 'changed',
             key: item,
@@ -38,7 +38,7 @@ const getAst = (before, after) => {
             afterValue: afterItem,
           }];
         case 'noObjects':
-          if (compareItems(beforeItem, afterItem)) {
+          if (compareTwoItems(beforeItem, afterItem)) {
             return [...acc, {
               type: 'equal',
               key: item,
@@ -71,8 +71,9 @@ const getAst = (before, after) => {
         beforeValue: null,
         afterValue: afterItem,
       }];
-    }
-  }, []);
+      // else
+    } // else
+  }, []); // reduce
 };
 
 export default getAst;

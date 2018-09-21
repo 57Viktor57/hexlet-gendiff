@@ -10,7 +10,6 @@ commander
   .arguments('<firstConfig> <secondConfig>')
   .option('-f, --format [type]', 'Output format')
   .action((firstConfig, secondConfig) => {
-    // console.log(`{\n${genDiff(firstConfig, secondConfig).join('\n')}\n}`);
-    genDiff(firstConfig, secondConfig);
+    console.log(genDiff(firstConfig, secondConfig));
   })
   .parse(process.argv);

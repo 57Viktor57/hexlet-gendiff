@@ -3,18 +3,17 @@ import _ from 'lodash';
 const renderObject = (data, depth) => {
   if (_.isObject(data)) {
     const keys = Object.keys(data);
-    return `{\n${keys.reduce((acc, item) => {
-      const currentItem = data[item];
-      if (_.isObject(currentItem)) {
-        return [...acc, `${' '.repeat(depth * 2)}${item}:`, ...renderObject(currentItem, depth + 1)];
+    return ['{', ...keys.reduce((acc, item) => {
+      if (_.isObject(data[item])) {
+        return [...acc, `${' '.repeat(depth * 2)}${item}: ${renderObject(data[item], depth + 1)}`];
       }
-      return [...acc, `${' '.repeat(depth * 2)}${item}: ${currentItem}`];
-    }, []).join('\n')}\n${' '.repeat(depth * 2 - 2)}}`;
+      return [...acc, `${' '.repeat(depth * 2)}${item}: ${data[item]}`];
+    }, []), `${' '.repeat(depth * 2 - 2)}}`].join('\n');
   }
   return data;
 };
 
-const render = (ast, depth = 1) => ast.reduce((acc, item) => {
+const render = (ast, depth = 1) => ['{', ...ast.reduce((acc, item) => {
   const {
     type, key, beforeValue, afterValue, children,
   } = item;
@@ -23,7 +22,7 @@ const render = (ast, depth = 1) => ast.reduce((acc, item) => {
   switch (type) {
     case 'object':
       return [
-        ...acc, `${' '.repeat(depth * 2)}${key}: {`, ...render(children, depth + 1), `${' '.repeat(depth * 2)}}`,
+        ...acc, `${' '.repeat(depth * 2)}${key}: ${render(children, depth + 1)}`,
       ];
     case 'equal':
       return [
@@ -44,7 +43,7 @@ const render = (ast, depth = 1) => ast.reduce((acc, item) => {
       ];
     default:
       throw new Error('Type error');
-  }
-}, []);
+  } // switch
+}, []), `${' '.repeat(depth * 2 - 2)}}`].join('\n');
 
-export default ast => `{\n${render(ast).join('\n')}\n}`;
+export default render;
