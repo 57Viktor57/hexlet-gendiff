@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const searchKeys = (before, after, item) => _.has(before, item) && _.has(after, item);
+const hasKeys = (before, after, item) => _.has(before, item) && _.has(after, item);
 const isEqual = (beforeItem, afterItem) => beforeItem === afterItem;
 
 
@@ -11,7 +11,7 @@ const getAst = (before, after, depth = 0) => {
     const beforeItem = before[item];
     const afterItem = after[item];
 
-    if (searchKeys(before, after, item)) {
+    if (hasKeys(before, after, item)) {
       const testBefore = _.isObject(beforeItem);
       const testAfter = _.isObject(afterItem);
       if (testBefore && testAfter) {
@@ -35,7 +35,6 @@ const getAst = (before, after, depth = 0) => {
           type: 'equal',
           key: item,
           beforeValue: beforeItem,
-          afterValue: null,
           level: depth,
         }];
       }
@@ -53,14 +52,12 @@ const getAst = (before, after, depth = 0) => {
         type: 'deleted',
         key: item,
         beforeValue: beforeItem,
-        afterValue: null,
         level: depth,
       }];
     }
     return [...acc, {
       type: 'added',
       key: item,
-      beforeValue: null,
       afterValue: afterItem,
       level: depth,
     }];

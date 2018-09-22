@@ -11,25 +11,17 @@ const render = (item, parent = '') => {
   const {
     type, key, beforeValue, afterValue, children,
   } = item;
-  const before = strignify(beforeValue);
-  const after = strignify(afterValue);
   switch (type) {
     case 'object':
       return children.map(node => render(node, `${key}.`));
     case 'changed':
-      return [
-        `Property '${parent}${key}' was updated. From ${before} to ${after}`,
-      ];
+      return `Property '${parent}${key}' was updated. From ${strignify(beforeValue)} to ${strignify(afterValue)}`;
     case 'deleted':
-      return [
-        `Property '${parent}${key}' was removed`,
-      ];
+      return `Property '${parent}${key}' was removed`;
     case 'added':
-      return [
-        `Property '${parent}${key}' was added with value: ${after}`,
-      ];
+      return `Property '${parent}${key}' was added with value: ${strignify(afterValue)}`;
     default:
-      return null;
+      throw new Error('Type error');
   } // switch
 };
 

@@ -20,35 +20,20 @@ const render = (item) => {
   const {
     type, key, beforeValue, afterValue, children, level,
   } = item;
-  const before = strignify(beforeValue, level);
-  const after = strignify(afterValue, level);
   switch (type) {
     case 'object':
-      return [
-        `${tab(level)}  ${key}: {`,
-        children.map(node => render(node)),
-        `${tab(level)}  }`,
-      ];
+      return `${tab(level + 1)}${key}: {\n${children.map(node => render(node)).join('\n')}\n${tab(level + 1)}}`;
     case 'equal':
-      return [
-        `${tab(level + 1)}${key}: ${before}`,
-      ];
+      return `${tab(level + 1)}${key}: ${strignify(beforeValue, level)}`;
     case 'changed':
-      return [
-        `${tab(level)}- ${key}: ${before}`,
-        `${tab(level)}+ ${key}: ${after}`,
-      ];
+      return `${tab(level)}- ${key}: ${strignify(beforeValue, level)}\n${tab(level)}+ ${key}: ${strignify(afterValue, level)}`;
     case 'deleted':
-      return [
-        `${tab(level)}- ${key}: ${before}`,
-      ];
+      return `${tab(level)}- ${key}: ${strignify(beforeValue, level)}`;
     case 'added':
-      return [
-        `${tab(level)}+ ${key}: ${after}`,
-      ];
+      return `${tab(level)}+ ${key}: ${strignify(afterValue, level)}`;
     default:
       throw new Error('Type error');
   } // switch
 };
 
-export default tree => `{\n${_.flattenDeep(tree.map(item => render(item))).join('\n')}\n}`;
+export default tree => _.flattenDeep(['{', tree.map(item => render(item)), '}']).join('\n');
