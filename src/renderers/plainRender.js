@@ -21,7 +21,7 @@ const render = (item, parent = '') => {
     case 'added':
       return `Property '${parent}${key}' was added with value: ${strignify(afterValue)}`;
     default:
-      throw new Error('Type error');
+      return null;
   } // switch
 };
 
