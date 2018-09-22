@@ -9,7 +9,7 @@ const strignify = (data) => {
 
 const render = (item, parent = '') => {
   const {
-    type, key, beforeValue, afterValue, children,
+    type, key, beforeValue, afterValue, children, value,
   } = item;
   switch (type) {
     case 'object':
@@ -19,7 +19,7 @@ const render = (item, parent = '') => {
     case 'deleted':
       return `Property '${parent}${key}' was removed`;
     case 'added':
-      return `Property '${parent}${key}' was added with value: ${strignify(afterValue)}`;
+      return `Property '${parent}${key}' was added with value: ${strignify(value)}`;
     default:
       return null;
   } // switch

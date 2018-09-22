@@ -11,7 +11,7 @@ $ make install
 ```
 ## Asciinema
 
-[![asciicast](https://asciinema.org/a/7SYGFi11pjuMpM0awcFW8Bk7S.png)](https://asciinema.org/a/7SYGFi11pjuMpM0awcFW8Bk7S)
+[![asciicast](https://asciinema.org/a/xwHqNIeWtQhN6YzFTDtKSTHLT.png)](https://asciinema.org/a/xwHqNIeWtQhN6YzFTDtKSTHLT)
 
 ## Help
 

@@ -32,9 +32,9 @@ const getAst = (before, after, depth = 0) => {
       }
       if (isEqual(beforeItem, afterItem)) {
         return [...acc, {
-          type: 'equal',
+          type: 'unchanged',
           key: item,
-          beforeValue: beforeItem,
+          value: beforeItem,
           level: depth,
         }];
       }
@@ -51,14 +51,14 @@ const getAst = (before, after, depth = 0) => {
       return [...acc, {
         type: 'deleted',
         key: item,
-        beforeValue: beforeItem,
+        value: beforeItem,
         level: depth,
       }];
     }
     return [...acc, {
       type: 'added',
       key: item,
-      afterValue: afterItem,
+      value: afterItem,
       level: depth,
     }];
     // else
