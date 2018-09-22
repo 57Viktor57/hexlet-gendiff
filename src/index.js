@@ -15,6 +15,7 @@ const genDiff = (path1, path2, type = 'diff') => {
   const afterObjectData = getParsedObject(afterData, afterExtension);
 
   const ast = getAst(beforeObjectData, afterObjectData);
+
   return render(ast, type);
 }; // function genDiff
 

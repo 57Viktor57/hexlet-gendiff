@@ -9,7 +9,16 @@ commander
   .description('Compares two configuration files and shows a difference.')
   .arguments('<firstConfig> <secondConfig>')
   .option('-f, --format [type]', 'Output format')
-  .action((firstConfig, secondConfig) => {
-    console.log(genDiff(firstConfig, secondConfig, commander.format));
+  .action((firstConfig, secondConfig, options) => {
+    try {
+      const { format } = options;
+      console.log(genDiff(firstConfig, secondConfig, format));
+    } catch (e) {
+      console.log(e.message);
+    };
   })
   .parse(process.argv);
+
+if (commander.args.length === 0) {
+  commander.help();
+}

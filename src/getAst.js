@@ -1,9 +1,5 @@
 import _ from 'lodash';
 
-const hasKeys = (before, after, item) => _.has(before, item) && _.has(after, item);
-const isEqual = (beforeItem, afterItem) => beforeItem === afterItem;
-
-
 const getAst = (before, after, depth = 0) => {
   const keys = _.union(Object.keys(before), Object.keys(after));
 
@@ -11,7 +7,7 @@ const getAst = (before, after, depth = 0) => {
     const beforeItem = before[item];
     const afterItem = after[item];
 
-    if (hasKeys(before, after, item)) {
+    if (_.has(before, item) && _.has(after, item)) {
       const testBefore = _.isObject(beforeItem);
       const testAfter = _.isObject(afterItem);
       if (testBefore && testAfter) {
@@ -21,7 +17,8 @@ const getAst = (before, after, depth = 0) => {
           children: getAst(beforeItem, afterItem, depth + 1),
           level: depth,
         }];
-      } if (testBefore || testAfter) {
+      } // if_2
+      if (testBefore || testAfter) {
         return [...acc, {
           type: 'changed',
           key: item,
@@ -29,15 +26,15 @@ const getAst = (before, after, depth = 0) => {
           afterValue: afterItem,
           level: depth,
         }];
-      }
-      if (isEqual(beforeItem, afterItem)) {
+      } // if_2
+      if (beforeItem === afterItem) {
         return [...acc, {
           type: 'unchanged',
           key: item,
           value: beforeItem,
           level: depth,
         }];
-      }
+      } // if_2
       return [...acc, {
         type: 'changed',
         key: item,
@@ -45,8 +42,7 @@ const getAst = (before, after, depth = 0) => {
         afterValue: afterItem,
         level: depth,
       }];
-      // else
-    }
+    } // if_1
     if (_.has(before, item)) {
       return [...acc, {
         type: 'deleted',
@@ -54,15 +50,14 @@ const getAst = (before, after, depth = 0) => {
         value: beforeItem,
         level: depth,
       }];
-    }
+    } // if
     return [...acc, {
       type: 'added',
       key: item,
       value: afterItem,
       level: depth,
     }];
-    // else
   }, []); // reduce
-};
+}; // function getAst
 
 export default getAst;

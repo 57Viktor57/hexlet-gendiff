@@ -37,6 +37,6 @@ const render = (item) => {
     default:
       throw new Error('Type error');
   } // switch
-};
+}; // function render
 
 export default ast => _.flattenDeep(['{', ast.map(item => render(item)), '}']).join('\n');

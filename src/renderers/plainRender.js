@@ -23,6 +23,6 @@ const render = (item, parent = '') => {
     default:
       return null;
   } // switch
-};
+}; // function render
 
-export default tree => _.flattenDeep(tree.map(item => render(item))).filter(item => item !== null).join('\n');
+export default ast => _.flattenDeep(ast.map(item => render(item))).filter(item => item !== null).join('\n');
