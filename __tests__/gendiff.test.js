@@ -28,4 +28,10 @@ describe('It works', () => {
     const content = fs.readFileSync(`${__dirname}/__fixtures__/expectTree.txt`, 'utf-8').trim();
     expect(genDiff(before, after)).toEqual(content);
   });
+  it('plain', () => {
+    const before = `${path}tree1.json`;
+    const after = `${path}tree2.json`;
+    const content = fs.readFileSync(`${__dirname}/__fixtures__/expectPlain.txt`, 'utf-8').trim();
+    expect(genDiff(before, after, 'plain')).toEqual(content);
+  });
 });
