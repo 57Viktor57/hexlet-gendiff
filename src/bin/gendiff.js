@@ -15,7 +15,7 @@ commander
       console.log(genDiff(firstConfig, secondConfig, format));
     } catch (e) {
       console.log(e.message);
-    };
+    }
   })
   .parse(process.argv);
 
