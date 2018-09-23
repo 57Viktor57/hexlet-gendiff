@@ -10,15 +10,7 @@ commander
   .arguments('<firstConfig> <secondConfig>')
   .option('-f, --format [type]', 'Output format')
   .action((firstConfig, secondConfig, options) => {
-    try {
-      const { format } = options;
-      console.log(genDiff(firstConfig, secondConfig, format));
-    } catch (e) {
-      console.log(e.message);
-    }
+    const { format } = options;
+    console.log(genDiff(firstConfig, secondConfig, format));
   })
   .parse(process.argv);
-
-if (commander.args.length === 0) {
-  commander.help();
-}

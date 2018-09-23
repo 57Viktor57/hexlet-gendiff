@@ -16,24 +16,24 @@ const strignify = (data, level) => {
   return _.flattenDeep(['{', inner, `${tab(level)}  }`]).join('\n');
 };
 
-const render = (item) => {
+const render = (item, depth = 0) => {
   const {
-    type, key, beforeValue, afterValue, children, level, value,
+    type, key, beforeValue, afterValue, children, value,
   } = item;
   switch (type) {
     case 'object':
-      return [`${tab(level + 1)}${key}: {`,
-        ...children.map(node => render(node)),
-        `${tab(level + 1)}}`];
+      return [`${tab(depth + 1)}${key}: {`,
+        ...children.map(node => render(node, depth + 1)),
+        `${tab(depth + 1)}}`];
     case 'unchanged':
-      return `${tab(level + 1)}${key}: ${strignify(value, level)}`;
+      return `${tab(depth + 1)}${key}: ${strignify(value, depth)}`;
     case 'changed':
-      return [`${tab(level)}- ${key}: ${strignify(beforeValue, level)}`,
-        `${tab(level)}+ ${key}: ${strignify(afterValue, level)}`];
+      return [`${tab(depth)}- ${key}: ${strignify(beforeValue, depth)}`,
+        `${tab(depth)}+ ${key}: ${strignify(afterValue, depth)}`];
     case 'deleted':
-      return `${tab(level)}- ${key}: ${strignify(value, level)}`;
+      return `${tab(depth)}- ${key}: ${strignify(value, depth)}`;
     case 'added':
-      return `${tab(level)}+ ${key}: ${strignify(value, level)}`;
+      return `${tab(depth)}+ ${key}: ${strignify(value, depth)}`;
     default:
       throw new Error('Type error');
   } // switch
